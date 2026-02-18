@@ -1,0 +1,1070 @@
+```html
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="sg-roi-calc" id="sgRoiCalc">
+  <style>
+    /* === COLORS === */
+    .sg-roi-calc {
+      --sg-lilac: #B4ABFF;
+      --sg-black: #000000;
+      --sg-white: #FFFFFF;
+      --sg-green: #CCFF42;
+      --sg-orange: #FF5B22;
+      --sg-lilac-light: #E8E5FF;
+      --sg-lilac-bg: #F5F4FF;
+      --sg-gray-100: #F7F7F8;
+      --sg-gray-300: #D1D1D6;
+      --sg-gray-500: #6E6E73;
+      --sg-error: #DC3545;
+      width: 100%;
+      color: var(--sg-black);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* === WEBFLOW RESET === */
+    .sg-roi-calc h2, .sg-roi-calc h3, .sg-roi-calc p,
+    .sg-roi-calc form, .sg-roi-calc fieldset, .sg-roi-calc legend,
+    .sg-roi-calc label, .sg-roi-calc button, .sg-roi-calc input {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font: inherit;
+      color: inherit;
+      background: none;
+    }
+
+    .sg-roi-calc button { cursor: pointer; }
+
+    .sg-roi-calc,
+    .sg-roi-calc * { box-sizing: border-box; }
+
+    .sg-roi-calc .screen {
+      opacity: 1;
+      transition: opacity 0.25s ease;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .sg-roi-calc .screen.is-hidden {
+      display: none;
+      opacity: 0;
+    }
+
+    .sg-roi-calc .inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px;
+    }
+
+    .sg-roi-calc .sharegate-label {
+      font-size: 14px;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--sg-black);
+      margin-bottom: 14px;
+    }
+
+    .sg-roi-calc .headline {
+      font-size: 36px;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--sg-black);
+    }
+
+    .sg-roi-calc .subheadline {
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 400;
+      color: var(--sg-black);
+    }
+
+    /* === BUTTONS === */
+    .sg-roi-calc .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      padding: 0 32px;
+      background: var(--sg-black);
+      color: var(--sg-white);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+
+    .sg-roi-calc .btn-primary:hover { background: #333333; }
+
+    .sg-roi-calc .btn-primary.is-disabled,
+    .sg-roi-calc .btn-primary:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .sg-roi-calc .text-link {
+      font-size: 14px;
+      color: var(--sg-gray-500);
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-top: 14px;
+    }
+
+    .sg-roi-calc .btn-primary:focus-visible,
+    .sg-roi-calc .text-link:focus-visible,
+    .sg-roi-calc .back-link:focus-visible,
+    .sg-roi-calc .text-input:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(180, 171, 255, 0.35);
+      border-radius: 8px;
+    }
+
+    /* === INTRO === */
+    .sg-roi-calc .screen-intro { background: var(--sg-lilac); }
+    .sg-roi-calc .screen-intro .inner { padding: 64px 48px; }
+    .sg-roi-calc .intro-cta { margin-top: 32px; }
+
+    /* === QUESTIONS === */
+    .sg-roi-calc .screen-question {
+      background: var(--sg-white);
+      border: 1px solid var(--sg-gray-300);
+    }
+
+    .sg-roi-calc .progress-text {
+      font-size: 13px;
+      color: var(--sg-gray-500);
+      margin-bottom: 8px;
+    }
+
+    .sg-roi-calc .progress-track {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--sg-gray-300);
+      overflow: hidden;
+    }
+
+    .sg-roi-calc .progress-fill {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--sg-lilac);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .sg-roi-calc .question-title {
+      margin-top: 32px;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 1.3;
+      color: var(--sg-black);
+    }
+
+    .sg-roi-calc .question-helper {
+      margin-top: 8px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--sg-gray-500);
+    }
+
+    .sg-roi-calc .text-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 12px 16px;
+      border: 2px solid var(--sg-gray-300);
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      background: var(--sg-white);
+      transition: border-color 0.15s ease;
+      color: var(--sg-black);
+    }
+
+    .sg-roi-calc .text-input:focus {
+      outline: none;
+      border-color: var(--sg-lilac);
+    }
+
+    .sg-roi-calc .text-input.error { border-color: var(--sg-error); }
+
+    .sg-roi-calc .inline-error {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--sg-error);
+      display: none;
+    }
+
+    .sg-roi-calc .inline-error.show { display: block; }
+
+    .sg-roi-calc .answers-wrap { margin: 0; padding: 0; }
+    .sg-roi-calc .answer-item { margin-bottom: 12px; }
+
+    .sg-roi-calc .answer-input {
+      position: absolute;
+      opacity: 0.0001;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .sg-roi-calc .answer-card {
+      display: block;
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid var(--sg-gray-300);
+      border-radius: 12px;
+      background: var(--sg-white);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .sg-roi-calc .answer-card:hover {
+      border-color: var(--sg-lilac-light);
+      background: var(--sg-lilac-bg);
+    }
+
+    .sg-roi-calc .answer-card.selected {
+      border-color: var(--sg-lilac);
+      background: var(--sg-lilac-bg);
+    }
+
+    .sg-roi-calc .answer-input:focus + .answer-card {
+      border-color: var(--sg-lilac);
+      box-shadow: 0 0 0 3px rgba(180, 171, 255, 0.2);
+    }
+
+    .sg-roi-calc .answer-card-label {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--sg-black);
+      line-height: 1.4;
+    }
+
+    .sg-roi-calc .answer-card-desc {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--sg-gray-500);
+    }
+
+    .sg-roi-calc .nav-row {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .sg-roi-calc .back-link {
+      margin-right: 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--sg-black);
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .sg-roi-calc .back-link.is-hidden {
+      visibility: hidden;
+      pointer-events: none;
+      width: 0;
+      margin-right: 0;
+    }
+
+    /* === RESULTS === */
+    .sg-roi-calc .screen-results {
+      background: var(--sg-white);
+      border: 1px solid var(--sg-gray-300);
+    }
+
+    .sg-roi-calc .hero-metric {
+      margin-top: 24px;
+      padding: 20px 28px;
+      border-radius: 12px;
+      background: var(--sg-lilac);
+      display: inline-block;
+      max-width: 100%;
+      word-wrap: break-word;
+    }
+
+    .sg-roi-calc .hero-metric-value {
+      margin: 0;
+      font-size: 48px;
+      line-height: 1.1;
+      font-weight: 700;
+      color: var(--sg-black);
+    }
+
+    .sg-roi-calc .metrics-grid {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .sg-roi-calc .metric-item {
+      border: 1px solid var(--sg-black);
+      border-radius: 12px;
+      padding: 16px;
+      background: var(--sg-black);
+    }
+
+    .sg-roi-calc .metric-value {
+      margin: 0 0 6px;
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 600;
+      color: var(--sg-green);
+    }
+
+    .sg-roi-calc .metric-value.negative { color: var(--sg-orange); }
+
+    .sg-roi-calc .metric-label {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.4;
+      color: var(--sg-gray-300);
+    }
+
+    .sg-roi-calc .result-cards {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .sg-roi-calc .result-card {
+      background: var(--sg-white);
+      border: 1px solid var(--sg-gray-300);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .sg-roi-calc .card-heading {
+      margin-bottom: 12px;
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 600;
+      color: var(--sg-black);
+    }
+
+    .sg-roi-calc .card-line {
+      margin-bottom: 8px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--sg-black);
+    }
+
+    .sg-roi-calc .card-line:last-child { margin-bottom: 0; }
+
+    .sg-roi-calc .result-text-block {
+      margin-top: 24px;
+    }
+
+    .sg-roi-calc .result-line {
+      margin-bottom: 10px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--sg-black);
+    }
+
+    .sg-roi-calc .result-line:last-child { margin-bottom: 0; }
+
+    .sg-roi-calc .context-block {
+      margin-top: 24px;
+      padding: 20px;
+      border: 1px solid var(--sg-gray-300);
+      border-radius: 12px;
+      background: var(--sg-gray-100);
+    }
+
+    .sg-roi-calc .context-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .sg-roi-calc .context-copy {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .sg-roi-calc .context-copy.after-cta {
+      margin-top: 12px;
+      margin-bottom: 0;
+    }
+
+    .sg-roi-calc .negative-note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px solid var(--sg-orange);
+      border-radius: 8px;
+      color: var(--sg-black);
+      background: #fff7f3;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .sg-roi-calc .results-actions { margin-top: 24px; }
+
+    .sg-roi-calc .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      clip: rect(0,0,0,0);
+      overflow: hidden;
+    }
+
+    .sg-roi-calc input[type="number"]::-webkit-inner-spin-button,
+    .sg-roi-calc input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .sg-roi-calc input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: none;
+    }
+
+    @media (max-width: 640px) {
+      .sg-roi-calc .inner,
+      .sg-roi-calc .screen-intro .inner { padding: 24px; }
+
+      .sg-roi-calc .headline { font-size: 30px; }
+
+      .sg-roi-calc .hero-metric {
+        display: block;
+        padding: 20px;
+      }
+
+      .sg-roi-calc .hero-metric-value { font-size: 40px; }
+
+      .sg-roi-calc .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+
+  <!-- === SCREEN 0: INTRO === -->
+  <section class="screen screen-intro" id="screenIntro" aria-labelledby="introTitle">
+    <div class="inner">
+      <p class="sharegate-label">ShareGate Protect</p>
+      <h2 class="headline" id="introTitle">How much is Microsoft 365 chaos costing you?</h2>
+      <p class="subheadline">See how much oversharing, access drift, and workspace sprawl is costing your tenant. Then show your leadership exactly what you could save with a purpose-built governance tool.</p>
+      <div class="intro-cta">
+        <button type="button" class="btn-primary" id="startBtn">Get my estimate</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- === SCREEN 1-8: QUESTIONS === -->
+  <section class="screen screen-question is-hidden" id="screenQuestion" aria-labelledby="questionTitle">
+    <div class="inner">
+      <p class="progress-text" id="progressText">Question 1 of 8</p>
+      <div class="progress-track" role="progressbar" id="progressTrack" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1" aria-label="Question progress">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <h2 class="question-title" id="questionTitle"></h2>
+      <p class="question-helper" id="questionHelper"></p>
+
+      <form id="questionForm" novalidate>
+        <div id="inputWrap"></div>
+
+        <fieldset id="cardsWrap">
+          <legend class="sr-only">Select one answer</legend>
+          <div class="answers-wrap" id="answersContainer"></div>
+        </fieldset>
+
+        <p class="inline-error" id="inlineError"></p>
+      </form>
+
+      <div class="nav-row">
+        <button type="button" class="back-link" id="backBtn">‹ Back</button>
+        <button type="button" class="btn-primary is-disabled" id="nextBtn" disabled aria-disabled="true">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- === SCREEN 9: RESULTS === -->
+  <section class="screen screen-results is-hidden" id="screenResults" aria-labelledby="resultsTitle">
+    <div class="inner">
+      <p class="sharegate-label">ShareGate Protect</p>
+      <h2 class="headline" id="resultsTitle">Your governance impact summary</h2>
+
+      <div class="hero-metric">
+        <p class="hero-metric-value" id="heroSavingsRange">$0 - $0</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <p class="metric-value" id="metricHoursRange">0-0</p>
+          <p class="metric-label">hours reclaimed per year</p>
+        </div>
+        <div class="metric-item">
+          <p class="metric-value" id="metricFteRange">0.0-0.0</p>
+          <p class="metric-label">FTE equivalent</p>
+        </div>
+        <div class="metric-item">
+          <p class="metric-value" id="metricRoiRange">0% to 0%</p>
+          <p class="metric-label">ROI range</p>
+        </div>
+        <div class="metric-item">
+          <p class="metric-value" id="metricPaybackRange">0.0-0.0 months</p>
+          <p class="metric-label">payback range</p>
+        </div>
+      </div>
+
+      <div class="result-cards">
+        <article class="result-card">
+          <h3 class="card-heading">Oversharing &amp; access drift</h3>
+          <p class="card-line">Potential savings: <strong id="overshareRange">$0 - $0</strong></p>
+          <p class="card-line">Hours reclaimed: <strong id="overshareHoursRange">0-0 per year</strong></p>
+        </article>
+
+        <article class="result-card">
+          <h3 class="card-heading">Copilot &amp; AI governance</h3>
+          <p class="card-line">Potential savings: <strong id="aiRange">$0 - $0</strong></p>
+          <p class="card-line">Hours reclaimed: <strong id="aiHoursRange">0-0 per year</strong></p>
+        </article>
+
+        <article class="result-card">
+          <h3 class="card-heading">Cost optimization</h3>
+          <p class="card-line">Potential savings: <strong id="storageRange">$0 - $0</strong></p>
+        </article>
+      </div>
+
+      <div class="result-text-block">
+        <p class="result-line" id="protectCostLine">Annual Protect cost: $0 (0 users × $18/user)</p>
+        <p class="result-line" id="netValueLine">Net annual value: $0 - $0</p>
+      </div>
+
+      <div class="context-block">
+        <h3 class="context-title">Here's what this means for you</h3>
+        <p class="context-copy" id="contextCopyOne"></p>
+        <button type="button" class="btn-primary">Get a personalized estimate</button>
+        <p class="context-copy after-cta">Our team will ask more detailed questions and give you a realistic estimate based on what's really happening in your Microsoft 365 environment.</p>
+      </div>
+
+      <p class="negative-note" id="negativeRoiNote">
+        Based on these inputs, ROI may be negative. Consider adjusting assumptions or exploring higher-impact use cases.
+      </p>
+
+      <div class="results-actions">
+        <button type="button" class="text-link" id="changeAnswersBtn">Change your answers</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // === STEPS ===
+    var steps = [
+      {
+        key: 'userCount',
+        type: 'input',
+        question: 'How many licensed Microsoft 365 users are in your tenant?',
+        helper: 'No need to count guests or external users',
+        inputMode: 'integer',
+        min: 1
+      },
+      {
+        key: 'identificationHours',
+        type: 'cards',
+        question: "What's your team's time investment in manual access review tasks?",
+        helper: "Think exporting CSVs, writing PowerShell scripts, jumping between admin centers to piece together who has access to what across SharePoint, Teams, Groups, and OneDrive. Don't include time spent on fixes. That'll be covered next.",
+        options: [
+          { label: 'Low', desc: 'Minimal manual work. Efficient processes or tools keep the detective work manageable.', value: 5 },
+          { label: 'Medium', desc: "Regular manual effort. Someone's always digging through admin centers or running scripts to track down access.", value: 20 },
+          { label: 'High', desc: 'Significant manual work. Lots of time spent manually investigating permissions and piecing together access patterns.', value: 40 }
+        ]
+      },
+      {
+        key: 'correctionHours',
+        type: 'cards',
+        question: "What's your team's time investment in manual remediation tasks?",
+        helper: 'Time spent manually removing links, adjusting permissions, cleaning up guest access across different admin centers. Just the hands-on fixing work.',
+        options: [
+          { label: 'Low', desc: 'Minimal manual cleanup. Efficient processes help us fix issues quickly when they come up.', value: 5 },
+          { label: 'Medium', desc: 'Regular manual remediation. There always seems to be something to clean up, permissions to fix, or risky links to remove.', value: 20 },
+          { label: 'High', desc: 'Heavy manual cleanup work. Significant time spent manually fixing access issues, removing shares, and cleaning up permissions.', value: 40 }
+        ]
+      },
+      {
+        key: 'aiValidationHours',
+        type: 'cards',
+        question: "What's your expected time investment in manual Copilot governance tasks this year?",
+        helper: "Think manual validation of permissions, ownership reviews, checking what AI can access across different admin centers. Don't double-count the general access work from earlier questions.",
+        options: [
+          { label: 'Low', desc: "Limited manual Copilot work. Either it's not a priority yet or we're confident in our current setup.", value: 25 },
+          { label: 'Medium', desc: 'Moderate manual validation effort. Some dedicated time needed to manually check and secure what Copilot can access.', value: 100 },
+          { label: 'High', desc: 'Significant manual governance work. Substantial time spent manually validating permissions, reviewing ownership, and securing AI access across our environment.', value: 200 }
+        ]
+      },
+      {
+        key: 'storageGrowthCost',
+        type: 'cards',
+        question: "What's your estimate for your tenant's collaboration storage growth costs this year?",
+        helper: "We're talking about the extra storage costs as your Teams, SharePoint, and OneDrive usage expands — not what you're already paying for existing storage.",
+        options: [
+          { label: 'Low', desc: "Modest growth costs. We're not anticipating major storage expansion this year.", value: 3000 },
+          { label: 'Medium', desc: "Noticeable storage costs. Growth is steady and we're tracking the increasing expense.", value: 12000 },
+          { label: 'High', desc: "Significant storage investment. Our company size and/or our cloud collaboration is scaling, so we're expecting substantial additional storage costs this year.", value: 35000 }
+        ]
+      },
+      {
+        key: 'storageAttributionPct',
+        type: 'cards',
+        question: 'What proportion of that storage growth comes from inactive or outdated content?',
+        helper: 'Your best guess at how much growth comes from abandoned Teams, duplicate sites, or workspaces that nobody manages anymore.',
+        options: [
+          { label: 'Low', desc: 'Pretty clean environment. Most of our storage growth comes from active, managed workspaces.', value: 8 },
+          { label: 'Medium', desc: "Some digital clutter. We've got abandoned workspaces and duplicates eating up storage, but it's not terrible.", value: 25 },
+          { label: 'High', desc: 'Sprawl is a real problem. Lots of forgotten Teams, duplicate sites, and orphaned workspaces taking up expensive storage space.', value: 50 }
+        ]
+      },
+      {
+        key: 'governanceMaturity',
+        type: 'cards',
+        question: "How would you describe your tenant's governance maturity?",
+        helper: 'This helps us calibrate how much impact Protect could have in your environment.',
+        options: [
+          { label: 'Low', desc: "We react to problems when they pop up, but don't have formal governance processes in place.", value: 'Low' },
+          { label: 'Medium', desc: "We've got some processes and can see what's happening, but enforcement is pretty hit-or-miss.", value: 'Medium' },
+          { label: 'High', desc: 'Good processes, decent visibility, and consistent governance, though it still takes some manual work to keep things clean.', value: 'High' }
+        ]
+      },
+      {
+        key: 'hourlyRate',
+        type: 'input',
+        question: "What's the fully loaded hourly cost for IT staff doing governance work?",
+        helper: 'Think about the IT team members who spend time on permissions, cleanup, and access management. Include their salary, benefits, and overhead.',
+        inputMode: 'decimal',
+        min: 1
+      }
+    ];
+
+    var currentStep = 1;
+    var answers = {};
+
+    var screenIntro = document.getElementById('screenIntro');
+    var screenQuestion = document.getElementById('screenQuestion');
+    var screenResults = document.getElementById('screenResults');
+
+    var startBtn = document.getElementById('startBtn');
+    var backBtn = document.getElementById('backBtn');
+    var nextBtn = document.getElementById('nextBtn');
+    var changeAnswersBtn = document.getElementById('changeAnswersBtn');
+
+    var progressText = document.getElementById('progressText');
+    var progressTrack = document.getElementById('progressTrack');
+    var progressFill = document.getElementById('progressFill');
+    var questionTitle = document.getElementById('questionTitle');
+    var questionHelper = document.getElementById('questionHelper');
+    var inputWrap = document.getElementById('inputWrap');
+    var cardsWrap = document.getElementById('cardsWrap');
+    var answersContainer = document.getElementById('answersContainer');
+    var inlineError = document.getElementById('inlineError');
+
+    var heroSavingsRange = document.getElementById('heroSavingsRange');
+    var metricHoursRange = document.getElementById('metricHoursRange');
+    var metricFteRange = document.getElementById('metricFteRange');
+    var metricRoiRange = document.getElementById('metricRoiRange');
+    var metricPaybackRange = document.getElementById('metricPaybackRange');
+    var overshareRange = document.getElementById('overshareRange');
+    var overshareHoursRange = document.getElementById('overshareHoursRange');
+    var aiRange = document.getElementById('aiRange');
+    var aiHoursRange = document.getElementById('aiHoursRange');
+    var storageRange = document.getElementById('storageRange');
+    var contextCopyOne = document.getElementById('contextCopyOne');
+    var protectCostLine = document.getElementById('protectCostLine');
+    var netValueLine = document.getElementById('netValueLine');
+    var negativeRoiNote = document.getElementById('negativeRoiNote');
+
+    function fmtDollar(n) {
+      var rounded = Math.round(n);
+      var abs = Math.abs(rounded).toLocaleString('en-US');
+      return (rounded < 0 ? '-$' : '$') + abs;
+    }
+
+    function showScreen(el) {
+      screenIntro.classList.add('is-hidden');
+      screenQuestion.classList.add('is-hidden');
+      screenResults.classList.add('is-hidden');
+      el.style.opacity = '0';
+      el.classList.remove('is-hidden');
+      void el.offsetWidth;
+      el.style.opacity = '1';
+      document.getElementById('sgRoiCalc').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function setNextEnabled(enabled) {
+      nextBtn.disabled = !enabled;
+      nextBtn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+      nextBtn.classList.toggle('is-disabled', !enabled);
+    }
+
+    function clearError() {
+      inlineError.textContent = '';
+      inlineError.classList.remove('show');
+      var input = inputWrap.querySelector('.text-input');
+      if (input) input.classList.remove('error');
+    }
+
+    function showError(msg) {
+      inlineError.textContent = msg;
+      inlineError.classList.add('show');
+      var input = inputWrap.querySelector('.text-input');
+      if (input) input.classList.add('error');
+    }
+
+    function getStep() {
+      return steps[currentStep - 1];
+    }
+
+    function renderStep() {
+      var step = getStep();
+      var key = step.key;
+      var saved = answers[key];
+
+      progressText.textContent = 'Question ' + currentStep + ' of 8';
+      progressTrack.setAttribute('aria-valuenow', String(currentStep));
+      progressFill.style.width = ((currentStep / 8) * 100) + '%';
+
+      questionTitle.textContent = step.question;
+      questionHelper.textContent = step.helper;
+
+      backBtn.classList.toggle('is-hidden', currentStep === 1);
+
+      clearError();
+      inputWrap.innerHTML = '';
+      answersContainer.innerHTML = '';
+
+      if (step.type === 'input') {
+        cardsWrap.style.display = 'none';
+        inputWrap.style.display = 'block';
+
+        var input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'text-input';
+        input.id = 'stepInput';
+        input.min = String(step.min || 0);
+        input.step = step.inputMode === 'integer' ? '1' : '0.01';
+        input.setAttribute('aria-label', step.question);
+        if (typeof saved !== 'undefined') input.value = saved;
+        inputWrap.appendChild(input);
+
+        setNextEnabled(typeof saved !== 'undefined' && saved !== '' && !isNaN(saved));
+
+        input.addEventListener('input', function () {
+          clearError();
+          var value = input.value.trim();
+          if (value === '') {
+            setNextEnabled(false);
+            answers[key] = undefined;
+            return;
+          }
+          var n = Number(value);
+          if (isNaN(n)) {
+            setNextEnabled(false);
+            return;
+          }
+          if (step.inputMode === 'integer') {
+            if (!Number.isInteger(n) || n < step.min) {
+              setNextEnabled(false);
+              answers[key] = undefined;
+              return;
+            }
+          } else if (n < step.min) {
+            setNextEnabled(false);
+            answers[key] = undefined;
+            return;
+          }
+
+          answers[key] = n;
+          setNextEnabled(true);
+        });
+      } else {
+        inputWrap.style.display = 'none';
+        cardsWrap.style.display = 'block';
+
+        for (var i = 0; i < step.options.length; i++) {
+          var opt = step.options[i];
+          var item = document.createElement('div');
+          item.className = 'answer-item';
+
+          var inputId = 'step' + currentStep + '_opt' + i;
+          var radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'step_' + currentStep;
+          radio.id = inputId;
+          radio.className = 'answer-input';
+          radio.setAttribute('data-index', String(i));
+          if (saved === opt.value) radio.checked = true;
+
+          var label = document.createElement('label');
+          label.className = 'answer-card' + (saved === opt.value ? ' selected' : '');
+          label.setAttribute('for', inputId);
+
+          var labelText = document.createElement('p');
+          labelText.className = 'answer-card-label';
+          labelText.textContent = opt.label;
+
+          var descText = document.createElement('p');
+          descText.className = 'answer-card-desc';
+          descText.textContent = opt.desc;
+
+          label.appendChild(labelText);
+          label.appendChild(descText);
+          item.appendChild(radio);
+          item.appendChild(label);
+          answersContainer.appendChild(item);
+        }
+
+        setNextEnabled(typeof saved !== 'undefined');
+      }
+    }
+
+    function updateSelectedCards() {
+      var cards = answersContainer.querySelectorAll('.answer-card');
+      for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+      var checked = answersContainer.querySelector('.answer-input:checked');
+      if (checked && checked.nextElementSibling) checked.nextElementSibling.classList.add('selected');
+    }
+
+    function validateCurrentStep() {
+      var step = getStep();
+      if (step.type !== 'input') return true;
+
+      var input = document.getElementById('stepInput');
+      if (!input) return false;
+
+      var value = input.value.trim();
+      if (value === '') {
+        showError('Please enter a value to continue.');
+        return false;
+      }
+
+      var n = Number(value);
+      if (isNaN(n)) {
+        showError('Please enter a valid number.');
+        return false;
+      }
+
+      if (step.inputMode === 'integer') {
+        if (!Number.isInteger(n) || n < step.min) {
+          showError('Please enter a whole number of at least ' + step.min + '.');
+          return false;
+        }
+      } else if (n < step.min) {
+        showError('Please enter a value of at least ' + step.min + '.');
+        return false;
+      }
+
+      answers[step.key] = n;
+      clearError();
+      return true;
+    }
+
+    // --- CALCULATION LOGIC (UNCHANGED) ---
+    function calculateRanges() {
+      var userCount = answers.userCount;
+      var hourlyRate = answers.hourlyRate;
+      var identificationHours = answers.identificationHours;
+      var correctionHours = answers.correctionHours;
+      var aiValidationHours = answers.aiValidationHours;
+      var storageGrowthCost = answers.storageGrowthCost;
+      var storageAttributionPct = answers.storageAttributionPct;
+      var governanceMaturity = answers.governanceMaturity;
+
+      var reductionPct = { Low: 0.35, Medium: 0.20, High: 0.10 }[governanceMaturity];
+
+      var overshareIdSavings = identificationHours * 12 * hourlyRate * reductionPct;
+      var overshareIdHours = identificationHours * 12 * reductionPct;
+      var overshareFixSavings = correctionHours * 12 * hourlyRate * reductionPct;
+      var overshareFixHours = correctionHours * 12 * reductionPct;
+
+      var aiSavings = aiValidationHours * hourlyRate * reductionPct;
+      var aiHours = aiValidationHours * reductionPct;
+
+      var storageSavings = storageGrowthCost * (storageAttributionPct / 100) * reductionPct;
+
+      var totalAnnualSavings = overshareIdSavings + overshareFixSavings + aiSavings + storageSavings;
+      var totalHoursReclaimed = overshareIdHours + overshareFixHours + aiHours;
+
+      var varianceMultiplier = 0.4;
+
+      var totalSavingsLow = Math.round(totalAnnualSavings * (1 - varianceMultiplier));
+      var totalSavingsHigh = Math.round(totalAnnualSavings * (1 + varianceMultiplier));
+
+      var hoursLow = Math.round(totalHoursReclaimed * (1 - varianceMultiplier));
+      var hoursHigh = Math.round(totalHoursReclaimed * (1 + varianceMultiplier));
+
+      var fteEquivalentLow = (hoursLow / 2080).toFixed(1);
+      var fteEquivalentHigh = (hoursHigh / 2080).toFixed(1);
+
+      var annualProtectCost = userCount * 18;
+      var netValueLow = totalSavingsLow - annualProtectCost;
+      var netValueHigh = totalSavingsHigh - annualProtectCost;
+
+      var roiLow = Math.round(((totalSavingsLow - annualProtectCost) / annualProtectCost) * 100);
+      var roiHigh = Math.round(((totalSavingsHigh - annualProtectCost) / annualProtectCost) * 100);
+
+      var paybackLow = null;
+      var paybackHigh = null;
+      if (totalSavingsLow > 0) {
+        paybackLow = ((annualProtectCost / totalSavingsHigh) * 12).toFixed(1);
+        paybackHigh = ((annualProtectCost / totalSavingsLow) * 12).toFixed(1);
+      }
+
+      var overshareTotal = overshareIdSavings + overshareFixSavings;
+      var overshareLow = Math.round(overshareTotal * (1 - varianceMultiplier));
+      var overshareHigh = Math.round(overshareTotal * (1 + varianceMultiplier));
+
+      var aiLow = Math.round(aiSavings * (1 - varianceMultiplier));
+      var aiHigh = Math.round(aiSavings * (1 + varianceMultiplier));
+
+      var storageLow = Math.round(storageSavings * (1 - varianceMultiplier));
+      var storageHigh = Math.round(storageSavings * (1 + varianceMultiplier));
+
+      var overshareHoursLow = Math.round((overshareIdHours + overshareFixHours) * (1 - varianceMultiplier));
+      var overshareHoursHigh = Math.round((overshareIdHours + overshareFixHours) * (1 + varianceMultiplier));
+
+      var aiHoursLow = Math.round(aiHours * (1 - varianceMultiplier));
+      var aiHoursHigh = Math.round(aiHours * (1 + varianceMultiplier));
+
+      return {
+        userCount: userCount,
+        annualProtectCost: annualProtectCost,
+        totalAnnualSavings: totalAnnualSavings,
+        totalSavingsLow: totalSavingsLow,
+        totalSavingsHigh: totalSavingsHigh,
+        hoursLow: hoursLow,
+        hoursHigh: hoursHigh,
+        fteEquivalentLow: fteEquivalentLow,
+        fteEquivalentHigh: fteEquivalentHigh,
+        netValueLow: netValueLow,
+        netValueHigh: netValueHigh,
+        roiLow: roiLow,
+        roiHigh: roiHigh,
+        paybackLow: paybackLow,
+        paybackHigh: paybackHigh,
+        overshareLow: overshareLow,
+        overshareHigh: overshareHigh,
+        aiLow: aiLow,
+        aiHigh: aiHigh,
+        storageLow: storageLow,
+        storageHigh: storageHigh,
+        overshareHoursLow: overshareHoursLow,
+        overshareHoursHigh: overshareHoursHigh,
+        aiHoursLow: aiHoursLow,
+        aiHoursHigh: aiHoursHigh
+      };
+    }
+
+    function renderResults(r) {
+      var zeroSavings = r.totalAnnualSavings === 0;
+
+      negativeRoiNote.style.display = 'none';
+      metricRoiRange.classList.remove('negative');
+
+      if (zeroSavings) {
+        heroSavingsRange.textContent = 'No savings estimated';
+        metricHoursRange.textContent = 'No savings estimated';
+        metricFteRange.textContent = 'No savings estimated';
+        metricRoiRange.textContent = 'No savings estimated';
+        metricPaybackRange.textContent = 'No savings estimated';
+
+        overshareRange.textContent = 'No savings estimated';
+        overshareHoursRange.textContent = 'No savings estimated';
+        aiRange.textContent = 'No savings estimated';
+        aiHoursRange.textContent = 'No savings estimated';
+        storageRange.textContent = 'No savings estimated';
+
+        contextCopyOne.textContent = 'Based on your current setup, these are ballpark estimates based on typical scenarios. If you want more accurate numbers, reach out to our ShareGate experts.';
+      } else {
+        heroSavingsRange.textContent = fmtDollar(r.totalSavingsLow) + ' - ' + fmtDollar(r.totalSavingsHigh);
+        metricHoursRange.textContent = r.hoursLow + '-' + r.hoursHigh;
+        metricFteRange.textContent = r.fteEquivalentLow + '-' + r.fteEquivalentHigh;
+        metricRoiRange.textContent = r.roiLow + '% to ' + r.roiHigh + '%';
+        metricPaybackRange.textContent = (r.paybackLow && r.paybackHigh) ? (r.paybackLow + '-' + r.paybackHigh + ' months') : 'No payback estimated';
+
+        overshareRange.textContent = fmtDollar(r.overshareLow) + ' - ' + fmtDollar(r.overshareHigh);
+        overshareHoursRange.textContent = r.overshareHoursLow + '-' + r.overshareHoursHigh + ' per year';
+        aiRange.textContent = fmtDollar(r.aiLow) + ' - ' + fmtDollar(r.aiHigh);
+        aiHoursRange.textContent = r.aiHoursLow + '-' + r.aiHoursHigh + ' per year';
+        storageRange.textContent = fmtDollar(r.storageLow) + ' - ' + fmtDollar(r.storageHigh);
+
+        contextCopyOne.textContent = 'Based on your current setup, you could potentially save ' + fmtDollar(r.totalSavingsLow) + ' - ' + fmtDollar(r.totalSavingsHigh) + ' annually. These are ballpark estimates based on typical scenarios. If you want more accurate numbers, reach out to our ShareGate experts.';
+      }
+
+      protectCostLine.textContent = 'Annual Protect cost: ' + fmtDollar(r.annualProtectCost) + ' (' + Math.round(r.userCount).toLocaleString('en-US') + ' users × $18/user)';
+      netValueLine.textContent = 'Net annual value: ' + fmtDollar(r.netValueLow) + ' to ' + fmtDollar(r.netValueHigh);
+
+      if (!zeroSavings && r.roiLow < 0) {
+        metricRoiRange.classList.add('negative');
+        negativeRoiNote.style.display = 'block';
+      }
+    }
+
+    startBtn.addEventListener('click', function () {
+      currentStep = 1;
+      renderStep();
+      showScreen(screenQuestion);
+    });
+
+    backBtn.addEventListener('click', function () {
+      if (currentStep > 1) {
+        currentStep -= 1;
+        renderStep();
+        showScreen(screenQuestion);
+      }
+    });
+
+    nextBtn.addEventListener('click', function () {
+      if (!validateCurrentStep()) return;
+      if (currentStep < 8) {
+        currentStep += 1;
+        renderStep();
+        showScreen(screenQuestion);
+      } else {
+        var results = calculateRanges();
+        renderResults(results);
+        showScreen(screenResults);
+      }
+    });
+
+    answersContainer.addEventListener('change', function (e) {
+      if (!e.target || !e.target.classList.contains('answer-input')) return;
+      var step = getStep();
+      var idx = Number(e.target.getAttribute('data-index'));
+      answers[step.key] = step.options[idx].value;
+      updateSelectedCards();
+      setNextEnabled(true);
+    });
+
+    changeAnswersBtn.addEventListener('click', function () {
+      currentStep = 1;
+      renderStep();
+      showScreen(screenQuestion);
+    });
+
+    renderStep();
+  </script>
+</div>
+```
